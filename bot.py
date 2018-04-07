@@ -17,6 +17,7 @@ class Bot(object):
         self.lastAction = 0
         self.moves = []
         self.score = 0
+        self.avgScore = 0
 
 #load privous trained data.
     def loadQval(self):
@@ -53,7 +54,7 @@ class Bot(object):
 #main function where q values are updated
     def update_scores(self):
         revMoves = list(reversed(self.moves))
-        if int(revMoves[0][2].split('_')[1]) > 100:
+        if (int(revMoves[0][2].split('_')[1]) > 100):
             upperPipeCol = True
         else:
             upperPipeCol = False
@@ -62,7 +63,7 @@ class Bot(object):
             state = m[0]
             act = m[1]
             res = m[2]
-            if (state.split("_")[1]<120):
+            if (int(state.split("_")[1]) > -100 and int(state.split("_")[1]) < 0):
                 self.Qval[state][act] = (1- self.lr) * (self.Qval[state][act]) + (self.lr) * ( self.r[1] + (self.discount)*max(self.Qval[res]) )
             if t == 1 or t==2:
                 self.Qval[state][act] = (1- self.lr) * (self.Qval[state][act]) + (self.lr) * ( self.r[2] + (self.discount)*max(self.Qval[res]) )
@@ -87,5 +88,8 @@ class Bot(object):
     def highScores(self,score):
         if self.score < score:
             self.score = score
-        print(self.score)   #to check progress of learened game
-        print(self.gameNo)
+        self.avgScore = (self.avgScore*(self.gameNo-1) + score ) / self.gameNo
+        print("Last Score:", score)
+        print("Avg Score:",self.avgScore)
+        print("Highest Score:",self.score)   #to check progress of learned game
+        print("Game Count:",self.gameNo)

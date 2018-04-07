@@ -10,7 +10,7 @@ from pygame.locals import *
 # Initialize the bot
 bot = Bot()
 
-FPS = 120
+FPS = 60
 SCREENWIDTH  = 288
 SCREENHEIGHT = 512
 # amount by which base can maximum shift to left

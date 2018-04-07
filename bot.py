@@ -4,11 +4,14 @@ class Bot(object):
 
 
     def __init__(self):
+        self.state = int(input("Enter 1 to trian or 2 to test (Default value: train):"))
         self.gameNo = 0
         self.DumpAfter = 25
         self.discount = 1
         self.r = {0: 10, 1: 1, 2: -1000}
         self.lr = 0.7
+        if self.state is 2:
+            self.lr = 0
         self.loadQval()
         self.lastState = "-20_-240_4"
         self.lastAction = 0

@@ -216,7 +216,7 @@ def mainGame(movementInfo):
         {'x': SCREENWIDTH + 200, 'y': newPipe1[0]['y']},
         {'x': SCREENWIDTH + 200 + (SCREENWIDTH / 2), 'y': newPipe2[0]['y']},
     ]
-
+    #print("upperPipes ", upperPipes)
     # list of lowerpipe
     lowerPipes = [
         {'x': SCREENWIDTH + 200, 'y': newPipe1[1]['y']},
@@ -235,9 +235,6 @@ def mainGame(movementInfo):
 
 
     while True:
-        if -playerx + lowerPipes[0]['x'] > -30: myPipe = lowerPipes[0]
-        else: myPipe = lowerPipes[1]
-
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
@@ -247,8 +244,12 @@ def mainGame(movementInfo):
                     playerVelY = playerFlapAcc
                     playerFlapped = True
                     SOUNDS['wing'].play()
-
-        if  bot.act(-playerx + myPipe['x'], - playery + myPipe['y'], playerVelY ):
+        #print(-playerx, myPipe['x'], - playery , myPipe['y'])
+        if -playerx + lowerPipes[0]['x'] > -30: #if bird passed the pipe
+            nearPipe = lowerPipes[0]
+        else:
+            nearPipe = lowerPipes[1]
+        if  bot.act(-playerx + nearPipe['x'], - playery + nearPipe['y'], playerVelY ):
             if playery > -2 * IMAGES['player'][0].get_height():
                 playerVelY = playerFlapAcc
                 playerFlapped = True
@@ -399,7 +400,9 @@ def getRandomPipe():
     # y of gap between upper and lower pipe
     gapY = random.randrange(0, int(BASEY * 0.6 - PIPEGAPSIZE))
     gapY += int(BASEY * 0.2)
+    #print(gapY)
     pipeHeight = IMAGES['pipe'][0].get_height()
+    #print(pipeHeight)
     pipeX = SCREENWIDTH + 10
 
     return [
